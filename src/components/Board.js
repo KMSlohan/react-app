@@ -9,11 +9,16 @@ const Board = () => {
    * 두 번째 인수 : State를 정하는 함수 (setter)
    */
   const [squares, setSquares] = useState(Array(9).fill(null))
+  const [xIsNext, setXIsNext] = useState(true)
 
+  const status = `Next player: ${xIsNext ? 'X' : 'O'}`
   const handleClick = (i) => {
     const newSquares = squares.slice()
-    newSquares[i] = 'X'
+    newSquares[i] = xIsNext ? 'X' : 'O'
     setSquares(newSquares)
+    // setXIsNext(!xIsNext) // 여러 개의 setXIsNext가 있어도 하나만 실행이 된다.
+    setXIsNext(prev => !prev) // 여러 개의 setXIsNext가 있으면 여러 개가 다 실행이 된다.
+    
   }
 
   const renderSquare = (i) => {
@@ -27,7 +32,7 @@ const Board = () => {
    */
     return (
       <div>
-        <div className='status'>Next Player: X, O</div>
+        <div className='status'>{status}</div>
         <div className='board-row'>
           {renderSquare(0)}
           {renderSquare(1)}
