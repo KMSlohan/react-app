@@ -1,46 +1,51 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Square from './Square'
 import "./Board.css"
 
-export default class Board extends Component {
+const Board = () => {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      squares: Array(9).fill(null),
-    }
+  /**
+   * 첫 번째 인수 : 변수 이름 (getter)
+   * 두 번째 인수 : State를 정하는 함수 (setter)
+   */
+  const [squares, setSquares] = useState(Array(9).fill(null))
+
+  const handleClick = (i) => {
+    const newSquares = squares.slice()
+    newSquares[i] = 'X'
+    setSquares(newSquares)
   }
 
-  handleClick(i) {
-    const squares = this.state.squares.slice()
-    squares[i] = 'X'
-    this.setState({ squares: squares })
+  const renderSquare = (i) => {
+    return <Square value={squares[i]} onClick={() => handleClick(i)} />
   }
 
-  renderSquare(i) {
-    return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />
-  }
-
-  render() {
+  /**
+   * Class component에서는 render() 안에 return()
+   * class component에서 render()는 컴포넌트를 렌더링 하는 메소드
+   * 함수형 컴포넌트에서는 render() 없이 바로 return()
+   */
     return (
       <div>
         <div className='status'>Next Player: X, O</div>
         <div className='board-row'>
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
+          {renderSquare(0)}
+          {renderSquare(1)}
+          {renderSquare(2)}
         </div>
         <div className='board-row'>
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
+          {renderSquare(3)}
+          {renderSquare(4)}
+          {renderSquare(5)}
         </div>
         <div className='board-row'>
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
+          {renderSquare(6)}
+          {renderSquare(7)}
+          {renderSquare(8)}
         </div>
       </div>
     )
-  }
 }
+
+// 함수형 컴포넌트에서 export 시키기
+export default Board
