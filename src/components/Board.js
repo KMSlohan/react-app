@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Square from './Square'
 import "./Board.css"
 
@@ -17,7 +17,7 @@ const Board = ({squares, onClick}) => {
    * 함수형 컴포넌트에서는 render() 없이 바로 return()
    */
     return (
-      <div>
+      <div className='board-wrapper'>
         <div className='board-row'>
           {renderSquare(0)}
           {renderSquare(1)}
