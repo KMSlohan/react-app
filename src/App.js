@@ -10,6 +10,7 @@ function App() {
    */
   const [history, setHistory] = useState([{squares: Array(9).fill(null)}]);
   const [xIsNext, setXIsNext] = useState(true)
+  const [stepNumber, setStepNumber] = useState(0)
 
   const calculateWinner = (squares) => {
     const lines = [
@@ -31,7 +32,7 @@ function App() {
     return null
   }
 
-  const current = history[history.length - 1] // 최신 동작
+  const current = history[stepNumber] // 최신 동작
   const winner = calculateWinner(current.squares)
   
 
@@ -47,6 +48,8 @@ function App() {
      * 클릭시 X, O 교체 
      * */
   const handleClick = (i) => {
+    const newHistory = history.slice(0, stepNumber + 1)
+    const newCurrent = newHistory[newHistory.length - 1]
     const newSquares = current.squares.slice()
 
     if (calculateWinner(newSquares) || newSquares[i]) {
@@ -54,9 +57,11 @@ function App() {
     }
 
     newSquares[i] = xIsNext ? 'X' : 'O'
-    setHistory([...history, { squares : newSquares }])
+    setHistory([...newHistory, { squares : newSquares }])
     // setXIsNext(!xIsNext) // 여러 개의 setXIsNext가 있어도 하나만 실행이 된다.
     setXIsNext(prev => !prev) // 여러 개의 setXIsNext가 있으면 여러 개가 다 실행이 된다. 
+
+    setStepNumber(newHistory.length)
   }
 
   const moves = history.map((step, move) => {
@@ -65,10 +70,15 @@ function App() {
     'Go to game start'
     return (
       <li key={move}>
-        <button>{desc}</button>
+        <button onClick={() => jumpTo(move)}>{desc}</button>
       </li>
     )
   })
+
+  const jumpTo = (step) => {
+    setStepNumber(step)
+    setXIsNext((step % 2) === 0)
+  }
 
   return (
     <div className="game">
